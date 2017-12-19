@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.mapper.SubjectTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.github.model.SubjectType" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="subject_type_name" property="subjectTypeName" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="sequence" property="sequence" jdbcType="INTEGER" />
+    <result column="fid" property="fid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, subject_type_name, pid, `status`, `sequence`, fid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from t_subject_type
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_subject_type
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.github.model.SubjectType" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_subject_type (subject_type_name, pid, `status`,
+    `sequence`, fid)
+    values (#{subjectTypeName,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+    #{sequence,jdbcType=INTEGER}, #{fid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.github.model.SubjectType" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_subject_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="subjectTypeName != null" >
+        subject_type_name,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+      <if test="sequence != null" >
+        `sequence`,
+      </if>
+      <if test="fid != null" >
+        fid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="subjectTypeName != null" >
+        #{subjectTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="sequence != null" >
+        #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="fid != null" >
+        #{fid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.github.model.SubjectType" >
+    update t_subject_type
+    <set >
+      <if test="subjectTypeName != null" >
+        subject_type_name = #{subjectTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="sequence != null" >
+        `sequence` = #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="fid != null" >
+        fid = #{fid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.github.model.SubjectType" >
+    update t_subject_type
+    set subject_type_name = #{subjectTypeName,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=INTEGER},
+      `sequence` = #{sequence,jdbcType=INTEGER},
+      fid = #{fid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectMaxSeqByPid" resultType="java.lang.Integer" parameterType="com.github.model.SubjectType" >
+    select if(max(`sequence`) is null, 0, max(`sequence`)) from t_subject_type where pid = #{pid,jdbcType=INTEGER} and fid = #{fid,jdbcType=INTEGER};
+  </select>
+
+  <select id="getList" resultMap="BaseResultMap" parameterType="com.github.model.SubjectType" >
+    select
+    <include refid="Base_Column_List" />
+    from t_subject_type
+    <where>
+      <if test="subjectTypeName != null" >
+        subject_type_name LIKE '%${subjectTypeName}%'
+      </if>
+      <if test="pid != null" >
+        and pid = #{pid,jdbcType=INTEGER}
+      </if>
+      <if test="status != null" >
+        and `status` = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="sequence != null" >
+        and `sequence` = #{sequence,jdbcType=INTEGER}
+      </if>
+      <if test="fid != null" >
+        and fid = #{fid,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+  <select id="getMap" resultType="java.util.HashMap" parameterType="com.github.model.SubjectType">
+    SELECT id, subject_type_name as name, pid, `status`, `sequence`, fid FROM t_subject_type
+    <where>
+      <if test="subjectTypeName != null" >
+        subject_type_name = #{subjectTypeName,jdbcType=VARCHAR}
+      </if>
+      <if test="pid != null" >
+        and pid = #{pid,jdbcType=INTEGER}
+      </if>
+      <if test="status != null" >
+        and `status` = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="sequence != null" >
+        and `sequence` = #{sequence,jdbcType=INTEGER}
+      </if>
+      <if test="fid != null" >
+        and fid = #{fid,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+</mapper>

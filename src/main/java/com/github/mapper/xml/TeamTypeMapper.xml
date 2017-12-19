@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.mapper.TeamTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.github.model.TeamType" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="fid" property="fid" jdbcType="INTEGER" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="sequnce" property="sequnce" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, fid, type_name, parent_id, sequnce, `status`
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_team_type
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_team_type
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.github.model.TeamType" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_team_type (fid, type_name, parent_id, 
+      sequnce, `status`)
+    values (#{fid,jdbcType=INTEGER}, #{typeName,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, 
+      #{sequnce,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.github.model.TeamType" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_team_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        fid,
+      </if>
+      <if test="typeName != null" >
+        type_name,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="sequnce != null" >
+        sequnce,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="typeName != null" >
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="sequnce != null" >
+        #{sequnce,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.github.model.TeamType" >
+    update t_team_type
+    <set >
+      <if test="fid != null" >
+        fid = #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="typeName != null" >
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="sequnce != null" >
+        sequnce = #{sequnce,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.github.model.TeamType" >
+    update t_team_type
+    set fid = #{fid,jdbcType=INTEGER},
+      type_name = #{typeName,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      sequnce = #{sequnce,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getList" resultMap="BaseResultMap" parameterType="com.github.model.TeamType" >
+    select
+    <include refid="Base_Column_List" />
+    from t_team_type
+    <where>
+      <if test="typeName != null" >
+        and type_name = #{typeName,jdbcType=INTEGER}
+      </if>
+      <if test="fid != null" >
+        and fid = #{fid,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+  <!--查出最大sequence-->
+  <select id="selectMaxSeqByPid" resultType="java.lang.Integer" parameterType="com.github.model.TeamType" >
+    select if(max(`sequnce`) is null, 0, max(`sequnce`)) from t_team_type where  fid = #{fid,jdbcType=INTEGER};
+  </select>
+
+  <select id="getMap" resultType="java.util.HashMap" parameterType="com.github.model.TeamType">
+    SELECT id, type_name as name, parent_id, `status`, `sequnce`, fid FROM t_team_type
+    <where>
+      <if test="typeName != null" >
+        type_name = #{typeName,jdbcType=VARCHAR}
+      </if>
+      <if test="parentId != null" >
+        and parent_id = #{parentId,jdbcType=INTEGER}
+      </if>
+      <if test="status != null" >
+        and `status` = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="sequnce != null" >
+        and `sequnce` = #{sequnce,jdbcType=INTEGER}
+      </if>
+      <if test="fid != null" >
+        and fid = #{fid,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+</mapper>

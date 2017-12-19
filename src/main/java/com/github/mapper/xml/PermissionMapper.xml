@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.mapper.PermissionMapper">
+
+	<resultMap id="BaseResultMap" type="com.github.model.Permission">
+        <result property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="icon" column="icon"/>
+        <result property="url" column="url"/>
+        <result property="target" column="target"/>
+        <result property="menu" column="menu"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="description" column="description"/>
+	</resultMap>
+	
+	<sql id="columns">
+	    <![CDATA[
+		id, parent_id, name, code, icon, url, target, menu, status, create_time, description
+	    ]]>
+	</sql>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <![CDATA[
+        INSERT INTO t_permission (
+        	id, 
+        	parent_id, 
+        	name, 
+        	code, 
+        	icon, 
+        	url, 
+        	target, 
+        	menu, 
+        	status, 
+        	create_time, 
+        	description
+        ) VALUES (
+        	#{id}, 
+        	#{parentId}, 
+        	#{name}, 
+        	#{code}, 
+        	#{icon}, 
+        	#{url}, 
+        	#{target}, 
+        	#{menu}, 
+        	#{status}, 
+        	#{createTime}, 
+        	#{description}
+        )
+    ]]>
+	</insert>
+    
+	<update id="update">
+    <![CDATA[
+        UPDATE t_permission SET
+	        parent_id = #{parentId}, 
+	        name = #{name}, 
+	        code = #{code}, 
+	        icon = #{icon}, 
+	        url = #{url}, 
+	        target = #{target}, 
+	        menu = #{menu}, 
+	        status = #{status}, 
+	        create_time = #{createTime}, 
+	        description = #{description}
+        WHERE 
+	        id = #{id} 
+    ]]>
+	</update>
+
+    <delete id="delete">
+    <![CDATA[
+        DELETE FROM t_permission WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="BaseResultMap">
+		SELECT <include refid="com.github.mapper.PermissionMapper.columns" />
+	    <![CDATA[
+		    FROM t_permission 
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+
+
+
+
+
+	<select id="getRolePermissionList" resultMap="BaseResultMap">
+		SELECT t.* FROM t_permission t, t_role_permission p
+		WHERE p.permission_id = t.id AND p.role_id = #{roleId}
+	</select>
+
+	<select id="getUserPermissionSet" resultMap="BaseResultMap">
+		SELECT DISTINCT(t.id), t.* FROM t_permission t, t_role_permission p, t_role r, t_user_role u
+		WHERE p.permission_id = t.id AND p.role_id = r.id AND r.id = u.role_id AND t.`status` = 1 AND u.user_id = #{userId}
+	</select>
+
+	
+	<select id="getUserMenuPermissionList" resultMap="BaseResultMap">
+		SELECT DISTINCT(t.id), t.* FROM t_permission t, t_role_permission p, t_role r, t_user_role u
+		WHERE p.permission_id = t.id AND p.role_id = r.id AND r.id = u.role_id AND t.`status` = 1 AND t.parent_id = 0 AND t.menu = 1 AND u.user_id = #{userId}
+	</select>
+	<select id="getMenuChildPermissionList" resultMap="BaseResultMap">
+		SELECT DISTINCT(t.id), t.* FROM t_permission t, t_role_permission p, t_role r, t_user_role u
+		WHERE p.permission_id = t.id AND p.role_id = r.id AND r.id = u.role_id AND t.menu = 1 AND t.`status` = 1 AND t.parent_id = #{id}
+	</select>
+	
+
+</mapper>
+

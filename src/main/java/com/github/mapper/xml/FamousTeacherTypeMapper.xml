@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.mapper.FamousTeacherTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.github.model.FamousTeacherType" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="teacher_type_name" property="teacherTypeName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="seqence" property="seqence" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="fid" property="fid" jdbcType="INTEGER" />
+  </resultMap>
+
+  <resultMap id="TreeResultMap" type="java.util.Map" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="teacher_type_name" property="teacherTypeName" jdbcType="VARCHAR" />
+    <result column="teacher_type_name" property="name" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="seqence" property="seqence" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="fid" property="fid" jdbcType="INTEGER" />
+    <collection property="children" column="id"  ofType="java.util.Map" select="getChild"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, teacher_type_name, `status`, seqence, pid, fid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_famous_teacher_type
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_famous_teacher_type
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.github.model.FamousTeacherType" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_famous_teacher_type (teacher_type_name, `status`, seqence, 
+      pid, fid)
+    values (#{teacherTypeName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{seqence,jdbcType=INTEGER}, 
+      #{pid,jdbcType=INTEGER}, #{fid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.github.model.FamousTeacherType" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_famous_teacher_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="teacherTypeName != null" >
+        teacher_type_name,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+      <if test="seqence != null" >
+        seqence,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="fid != null" >
+        fid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="teacherTypeName != null" >
+        #{teacherTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="seqence != null" >
+        #{seqence,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="fid != null" >
+        #{fid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.github.model.FamousTeacherType" >
+    update t_famous_teacher_type
+    <set >
+      <if test="teacherTypeName != null" >
+        teacher_type_name = #{teacherTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="seqence != null" >
+        seqence = #{seqence,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="fid != null" >
+        fid = #{fid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.github.model.FamousTeacherType" >
+    update t_famous_teacher_type
+    set teacher_type_name = #{teacherTypeName,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
+      seqence = #{seqence,jdbcType=INTEGER},
+      pid = #{pid,jdbcType=INTEGER},
+      fid = #{fid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+  <select id="getList" parameterType="com.github.model.FamousTeacherType" resultMap="BaseResultMap">
+    SELECT * FROM t_famous_teacher_type
+    WHERE
+    TRUE
+    <if test="id != null" >
+      AND id = #{id}
+    </if>
+    <if test="teacherTypeName != null" >
+      AND teacher_type_name LIKE '%${teacherTypeName}%'
+    </if>
+    <if test="status != null" >
+      AND `status` = #{status}
+    </if>
+    <if test="seqence != null" >
+      AND seqence = #{seqence}
+    </if>
+    <if test="pid != null" >
+      AND pid = #{pid}
+    </if>
+    <if test="fid != null" >
+      AND fid = #{fid}
+    </if>
+  </select>
+  <select id="getTree" parameterType="java.lang.Integer" resultMap="TreeResultMap">
+    SELECT * FROM t_famous_teacher_type
+    WHERE fid = #{fid} AND pid=0
+  </select>
+
+  <select id="getChild" parameterType="java.lang.Integer"  resultMap="TreeResultMap">
+    SELECT * FROM t_famous_teacher_type
+    WHERE pid = #{id}
+  </select>
+
+
+
+
+</mapper>

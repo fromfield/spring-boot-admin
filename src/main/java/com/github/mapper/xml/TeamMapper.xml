@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.mapper.TeamMapper" >
+  <resultMap id="BaseResultMap" type="com.github.model.Team" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="fid" property="fid" jdbcType="INTEGER" />
+    <result column="team_id" property="teamId" jdbcType="INTEGER" />
+    <result column="show_name" property="showName" jdbcType="VARCHAR" />
+    <result column="cover" property="cover" jdbcType="VARCHAR" />
+    <result column="team_type" property="teamType" jdbcType="INTEGER" />
+    <result column="sequnce" property="sequnce" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, fid, team_id, show_name, cover, team_type, sequnce, `status`, description
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_team
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_team
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.github.model.Team" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_team (fid, team_id, show_name, 
+      cover, team_type, sequnce, 
+      `status`, description)
+    values (#{fid,jdbcType=INTEGER}, #{teamId,jdbcType=INTEGER}, #{showName,jdbcType=VARCHAR}, 
+      #{cover,jdbcType=VARCHAR}, #{teamType,jdbcType=INTEGER}, #{sequnce,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.github.model.Team" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_team
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        fid,
+      </if>
+      <if test="teamId != null" >
+        team_id,
+      </if>
+      <if test="showName != null" >
+        show_name,
+      </if>
+      <if test="cover != null" >
+        cover,
+      </if>
+      <if test="teamType != null" >
+        team_type,
+      </if>
+      <if test="sequnce != null" >
+        sequnce,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fid != null" >
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="teamId != null" >
+        #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="showName != null" >
+        #{showName,jdbcType=VARCHAR},
+      </if>
+      <if test="cover != null" >
+        #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="teamType != null" >
+        #{teamType,jdbcType=INTEGER},
+      </if>
+      <if test="sequnce != null" >
+        #{sequnce,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.github.model.Team" >
+    update t_team
+    <set >
+      <if test="fid != null" >
+        fid = #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="teamId != null" >
+        team_id = #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="showName != null" >
+        show_name = #{showName,jdbcType=VARCHAR},
+      </if>
+      <if test="cover != null" >
+        cover = #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="teamType != null" >
+        team_type = #{teamType,jdbcType=INTEGER},
+      </if>
+      <if test="sequnce != null" >
+        sequnce = #{sequnce,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.github.model.Team" >
+    update t_team
+    set fid = #{fid,jdbcType=INTEGER},
+      team_id = #{teamId,jdbcType=INTEGER},
+      show_name = #{showName,jdbcType=VARCHAR},
+      cover = #{cover,jdbcType=VARCHAR},
+      team_type = #{teamType,jdbcType=INTEGER},
+      sequnce = #{sequnce,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getList" resultMap="BaseResultMap" parameterType="com.github.model.Team" >
+    select
+    <include refid="Base_Column_List" />
+    from t_team
+    <where>
+      <if test="showName != null" >
+        show_name LIKE '%${showName}%'
+      </if>
+      <if test="fid != null" >
+        and fid = #{fid,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectTypeNotRTeam" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_team
+    <where>
+      id not in (select team_id from t_team_r_type where type_id = #{typeId,jdbcType=INTEGER})
+      <if test="team.showName != null" >
+        and show_name LIKE '%${team.showName}%'
+      </if>
+      <if test="team.fid != null" >
+        and fid = #{team.fid,jdbcType=INTEGER}
+      </if>
+      <if test="team.status != null" >
+        and `status` = #{team.status,jdbcType=INTEGER}
+      </if>
+      <!--<if test="subject.online != null" >-->
+        <!--and online = #{subject.online,jdbcType=INTEGER}-->
+      <!--</if>-->
+    </where>
+  </select>
+
+  <select id="selectTypeRTeam" resultMap="BaseResultMap">
+    select t.* from t_team_r_type as tr, t_team as t
+    <where>
+      tr.team_id = t.id and tr.type_id = #{typeId,jdbcType=INTEGER}
+      <if test="team.showName != null" >
+        and t.show_name LIKE '%${team.showName}%'
+      </if>
+      <if test="team.fid != null" >
+        and t.fid = #{team.fid,jdbcType=INTEGER}
+      </if>
+      <if test="team.status != null" >
+        and t.`status` = #{team.status,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+  <!-- 首页查询推荐小组 -->
+  <select id="homePageRecommended" resultMap="BaseResultMap">
+    select  ts.* from t_team ts, t_recommended_team tr
+    <where>
+      ts.id = tr.team_id and ts.status = 1
+      <if test="fid != null">
+        and tr.fid = #{fid}
+      </if>
+      <if test="fid == null">
+        and tr.fid is null
+      </if>
+      <if test="showName != null" >
+        and show_name LIKE '%${showName}%'
+      </if>
+    </where>
+  </select>
+  <!--首页查询未推荐小组-->
+  <select id="homePageNotRecommended" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_team
+    <where>
+      id not in (select team_id from t_recommended_team where
+      <if test="fid != null">
+        fid = #{fid}
+      </if>
+      <if test="fid == null">
+        fid is null
+      </if>
+      )
+      <if test="showName != null" >
+        and show_name LIKE '%${showName}%'
+      </if>
+      <if test="status != null" >
+        and `status` = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="fid != null">
+        and fid = #{fid}
+      </if>
+      <if test="fid == null">
+        and fid is null
+      </if>
+    </where>
+  </select>
+</mapper>

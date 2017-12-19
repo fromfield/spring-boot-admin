@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>角色添加</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../assets/layui/css/layui.css" th:href="@{/assets/layui/css/layui.css}"/>
+    <link rel="stylesheet" href="../assets/css/style.css" th:href="@{/assets/css/style.css}">
+    <style>
+        .text-l{
+            text-align: left;
+        }
+        .marginL15{
+            margin-left: 15px;
+        }
+        .btn-inline-block{
+            display: inline-block;
+            margin-right: 30px;
+        }
+        .icon-upload{
+            line-height: 100px;
+            font-size: 60px;
+            color: #DBDBDB;
+        }
+        #img{
+            display: inline-block;
+            border:1px solid #ddd;
+            height: 100px;
+            width: 100px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        #img>img{
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="child-body">
+<input type="hidden" id="fid" name="fid" th:value="${fid}">
+<form action="/orgIndex/reloadHomeOfOrganizations" method="post" class="layui-form" style="width:80%;">
+    <div class="layui-form-item">
+        <label class="layui-form-label text-l">图片预览</label>
+    </div>
+    <div class="layui-form-item">
+        <div class="marginL15">
+            <a target="_blank"  style="cursor: pointer" id="img" >
+                <i class="layui-icon icon-upload">&#xe681;</i>
+            </a>
+        </div>
+    </div>
+    <div class="layui-form-item marginL15">
+        <div class="btn-inline-block">
+            <button type="button" class="layui-btn" id="uploadBtn">
+                <i class="layui-icon">&#xe67c;</i>上传图片
+            </button>
+        </div>
+        <div class="btn-inline-block">
+            <button class="layui-btn" lay-submit lay-filter="addLinks">提交</button>
+        </div>
+    </div>
+    <input type="hidden"  id="flag" lay-verify="required"/>
+</form>
+
+<script type="text/javascript" src="../assets/layui/layui.js" th:src="@{/assets/layui/layui.js}"></script>
+
+
+<script type="text/javascript">
+    layui.use(['form', 'layer', 'jquery','upload'], function(){
+        var form = layui.form,
+            layer = parent.layer === undefined ? layui.layer : parent.layer,
+            $ = layui.jquery,
+            upload = layui.upload;
+
+        //监听指定开关
+        form.on('switch', function(data){
+            this.checked ? this.value = 1 : this.value = 0;
+        });
+
+        form.on("submit(addLinks)",function(data){
+            var status = data.field.status=="on" ? "1" : "0";
+
+        });
+
+        //执行实例
+        var fid = $("#fid").val();
+        var uploadInst = upload.render({
+            elem: '#uploadBtn' //绑定元素
+            ,url: '/upload/logo' //上传接口
+            ,field: 'uploadFile'
+            ,data: {'directory': '/logo','fileName':fid}
+            ,done: function(res){
+                var url = res.url;
+                $('#img').html('<img id ="imgId" src="' + url + '">');
+                $('#flag').val(url);
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

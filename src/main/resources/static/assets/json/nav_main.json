@@ -1,0 +1,52 @@
+{
+  "data": [
+    {
+      "text": "系统管理",
+      "icon": "&#xe620;",
+      "subset": [
+        {
+          "text": "按钮",
+          "icon": "&#xe621;",
+          "href": "demo/btn.html"
+        },{
+          "text": "表单",
+          "icon": "&#xe621;",
+          "href": "demo/form.html"
+        },{
+          "text": "更多示例",
+          "icon": "&#xe621;",
+          "target": true,
+          "href": "http://www.layui.com/demo/"
+        }
+      ]
+    },{
+      "text": "扩展",
+      "icon": "&#xe628;",
+      "href": "",
+      "subset": [
+        {
+          "text": "登录页",
+          "icon": "&#xe621;",
+          "href": "demo/login.html"
+        },{
+          "text": "登录页2",
+          "icon": "&#xe621;",
+          "href": "demo/login2.html"
+        },{
+          "text": "注册页",
+          "icon": "&#xe621;",
+          "href": "demo/register.html"
+        }
+      ]
+    },{
+      "text": "子窗口操作",
+      "icon": "&#xe638;",
+      "href": "demo/children.html"
+    },{
+      "text": "百度",
+      "icon": "&#xe601;",
+      "target": true,
+      "href": "//www.baidu.com"
+    }
+  ]
+}

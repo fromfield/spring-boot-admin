@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.mapper.UserMapper">
+
+	<resultMap id="BaseResultMap" type="com.github.model.User">
+        <result property="id" column="id"/>
+        <result property="fid" column="fid"/>
+        <result property="uid" column="uid"/>
+        <result property="userName" column="user_name"/>
+        <result property="salt" column="salt"/>
+        <result property="password" column="password"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="realName" column="real_name"/>
+        <result property="phone" column="phone"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+        <result property="loginTimes" column="login_times"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="com.github.mapper.UserMapper.columns">
+	    <![CDATA[
+		id, fid, uid, user_name, salt, password, nick_name, real_name, phone, last_login_time, login_times, status, create_time, update_time
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    <![CDATA[
+        INSERT INTO t_user (
+        	id, 
+        	fid,
+        	uid,
+        	user_name,
+        	salt, 
+        	password, 
+        	nick_name, 
+        	real_name, 
+        	phone, 
+        	last_login_time, 
+        	login_times, 
+        	status, 
+        	create_time, 
+        	update_time
+        ) VALUES (
+        	#{id}, 
+        	#{fid},
+        	#{uid},
+        	#{userName},
+        	#{salt}, 
+        	#{password}, 
+        	#{nickName}, 
+        	#{realName}, 
+        	#{phone}, 
+        	#{lastLoginTime}, 
+        	#{loginTimes}, 
+        	#{status}, 
+        	#{createTime}, 
+        	#{updateTime}
+        )
+    ]]>
+	</insert>
+    
+	<update id="update">
+    <![CDATA[
+        UPDATE t_user SET
+	        user_name = #{userName},
+	        salt = #{salt}, 
+	        password = #{password}, 
+	        nick_name = #{nickName}, 
+	        real_name = #{realName}, 
+	        phone = #{phone}, 
+	        last_login_time = #{lastLoginTime}, 
+	        login_times = #{loginTimes}, 
+	        status = #{status}, 
+	        create_time = #{createTime}, 
+	        update_time = #{updateTime}
+        WHERE 
+	        id = #{id} 
+    ]]>
+	</update>
+
+    <delete id="delete">
+    <![CDATA[
+        DELETE FROM t_user WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="get" resultMap="BaseResultMap">
+		SELECT <include refid="com.github.mapper.UserMapper.columns"/>
+	    <![CDATA[
+		    FROM t_user 
+	        WHERE 
+		        id = #{id} 
+	    ]]>
+	</select>
+
+	<select id="getByUserName" resultMap="BaseResultMap">
+		SELECT <include refid="com.github.mapper.UserMapper.columns"/>
+		<![CDATA[
+		    FROM t_user
+	        WHERE
+		        user_name = #{userName}
+	    ]]>
+	</select>
+
+    <select id="getManageList" resultType="java.util.HashMap">
+        SELECT t.*, GROUP_CONCAT(r.name) AS roleName FROM t_user t
+        LEFT JOIN t_user_role ur ON t.id = ur.user_id
+        LEFT JOIN t_role r ON r.id = ur.role_id
+        GROUP BY t.id
+    </select>
+
+	
+</mapper>
+

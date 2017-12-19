@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.mapper.SubjectMapper" >
+  <resultMap id="BaseResultMap" type="com.github.model.Subject" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="data_id" property="dataId" jdbcType="VARCHAR" />
+    <result column="cover" property="cover" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="hour" property="hour" jdbcType="INTEGER" />
+    <result column="summary" property="summary" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="jour_url" property="jourUrl" jdbcType="VARCHAR" />
+    <result column="average" property="average" jdbcType="REAL" />
+    <result column="enroll" property="enroll" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="online" property="online" jdbcType="INTEGER" />
+    <result column="fid" property="fid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, data_id, cover, title, author, `uid`, `hour`, summary, `type`, type_id, jour_url, 
+    average, enroll, `status`, `online`, fid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from t_subject
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_subject
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.github.model.Subject" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_subject (data_id, cover, title,
+    author, `uid`, `hour`,
+    summary, `type`, type_id,
+    jour_url, average, enroll,
+    `status`, `online`, fid
+    )
+    values (#{dataId,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+    #{author,jdbcType=VARCHAR}, #{uid,jdbcType=INTEGER}, #{hour,jdbcType=INTEGER},
+    #{summary,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{typeId,jdbcType=INTEGER},
+    #{jourUrl,jdbcType=VARCHAR}, #{average,jdbcType=REAL}, #{enroll,jdbcType=INTEGER},
+    #{status,jdbcType=INTEGER}, #{online,jdbcType=INTEGER}, #{fid,jdbcType=INTEGER}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.github.model.Subject" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_subject
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dataId != null" >
+        data_id,
+      </if>
+      <if test="cover != null" >
+        cover,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="uid != null" >
+        `uid`,
+      </if>
+      <if test="hour != null" >
+        `hour`,
+      </if>
+      <if test="summary != null" >
+        summary,
+      </if>
+      <if test="type != null" >
+        `type`,
+      </if>
+      <if test="typeId != null" >
+        type_id,
+      </if>
+      <if test="jourUrl != null" >
+        jour_url,
+      </if>
+      <if test="average != null" >
+        average,
+      </if>
+      <if test="enroll != null" >
+        enroll,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+      <if test="online != null" >
+        `online`,
+      </if>
+      <if test="fid != null" >
+        fid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dataId != null" >
+        #{dataId,jdbcType=VARCHAR},
+      </if>
+      <if test="cover != null" >
+        #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="hour != null" >
+        #{hour,jdbcType=INTEGER},
+      </if>
+      <if test="summary != null" >
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="typeId != null" >
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="jourUrl != null" >
+        #{jourUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="average != null" >
+        #{average,jdbcType=REAL},
+      </if>
+      <if test="enroll != null" >
+        #{enroll,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="online != null" >
+        #{online,jdbcType=INTEGER},
+      </if>
+      <if test="fid != null" >
+        #{fid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.github.model.Subject" >
+    update t_subject
+    <set >
+      <if test="dataId != null" >
+        data_id = #{dataId,jdbcType=VARCHAR},
+      </if>
+      <if test="cover != null" >
+        cover = #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        `uid` = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="hour != null" >
+        `hour` = #{hour,jdbcType=INTEGER},
+      </if>
+      <if test="summary != null" >
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="typeId != null" >
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="jourUrl != null" >
+        jour_url = #{jourUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="average != null" >
+        average = #{average,jdbcType=REAL},
+      </if>
+      <if test="enroll != null" >
+        enroll = #{enroll,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="online != null" >
+        `online` = #{online,jdbcType=INTEGER},
+      </if>
+      <if test="fid != null" >
+        fid = #{fid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.github.model.Subject" >
+    update t_subject
+    set data_id = #{dataId,jdbcType=VARCHAR},
+      cover = #{cover,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      `uid` = #{uid,jdbcType=INTEGER},
+      `hour` = #{hour,jdbcType=INTEGER},
+      summary = #{summary,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=INTEGER},
+      type_id = #{typeId,jdbcType=INTEGER},
+      jour_url = #{jourUrl,jdbcType=VARCHAR},
+      average = #{average,jdbcType=REAL},
+      enroll = #{enroll,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=INTEGER},
+      `online` = #{online,jdbcType=INTEGER},
+      fid = #{fid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectTypeRSubject" resultMap="BaseResultMap">
+    select s.* from t_subject_r_type as sr, t_subject as s
+    <where>
+      sr.subject_id = s.id and sr.type_id = #{typeId,jdbcType=INTEGER}
+      <if test="subject.title != null" >
+        and s.title LIKE '%${subject.title}%'
+      </if>
+      <if test="subject.fid != null" >
+        and s.fid = #{subject.fid,jdbcType=INTEGER}
+      </if>
+      <if test="subject.status != null" >
+        and s.`status` = #{subject.status,jdbcType=INTEGER}
+      </if>
+      <if test="subject.online != null" >
+        and s.online = #{subject.online,jdbcType=INTEGER}
+      </if>
+      <if test="subject.type != null" >
+        and s.type = #{subject.type,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+  <select id="getList" resultMap="BaseResultMap" parameterType="com.github.model.Subject" >
+    select
+    <include refid="Base_Column_List" />
+    from t_subject
+    <where>
+      <if test="title != null" >
+        title LIKE '%${title}%'
+      </if>
+      <if test="fid != null" >
+        and fid = #{fid,jdbcType=INTEGER}
+      </if>
+      <if test="status != null" >
+        and `status` = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="online != null" >
+        and online = #{online,jdbcType=INTEGER}
+      </if>
+      <if test="type != null" >
+        and type = #{type,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+
+  <select id="selectTypeNotRSubject" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_subject
+    <where>
+      id not in (select subject_id from t_subject_r_type where type_id = #{typeId,jdbcType=INTEGER})
+      <if test="subject.title != null" >
+        and title LIKE '%${subject.title}%'
+      </if>
+      <if test="subject.fid != null" >
+        and fid = #{subject.fid,jdbcType=INTEGER}
+      </if>
+      <if test="subject.status != null" >
+        and `status` = #{subject.status,jdbcType=INTEGER}
+      </if>
+      <if test="subject.online != null" >
+        and online = #{subject.online,jdbcType=INTEGER}
+      </if>
+      <if test="subject.type != null" >
+        and type = #{subject.type,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
+
+  <!-- 首页阅读推荐 -->
+  <select id="homePageRecommended" resultMap="BaseResultMap">
+    select  ts.* from t_subject ts, t_recommended_subject tr
+    <where>
+      ts.id = tr.subject_id and ts.`type` = #{type} and ts.status = 1 and ts.online = 1
+      <if test="fid != null">
+        and tr.fid = #{fid}
+      </if>
+      <if test="fid == null">
+        and tr.fid is null
+      </if>
+      <if test="title != null" >
+        and title LIKE '%${title}%'
+      </if>
+    </where>
+  </select>
+
+  <select id="homePageNotRecommended" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_subject
+    <where>
+      id not in (select subject_id from t_recommended_subject where
+        <if test="fid != null">
+          fid = #{fid}
+        </if>
+        <if test="fid == null">
+          fid is null
+        </if>
+      )
+      <if test="title != null" >
+        and title LIKE '%${title}%'
+      </if>
+      <if test="status != null" >
+        and `status` = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="online != null" >
+        and online = #{online,jdbcType=INTEGER}
+      </if>
+      <if test="type != null" >
+        and type = #{type,jdbcType=INTEGER}
+      </if>
+      <if test="fid != null">
+        and fid = #{fid}
+      </if>
+      <if test="fid == null">
+        and fid is null
+      </if>
+    </where>
+  </select>
+</mapper>

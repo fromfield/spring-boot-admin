@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.mapper.FamousTeacherTypeRelationMapper">
+
+    <resultMap id="BaseResultMap" type="com.github.model.FamousTeacherTypeRelation">
+        <result property="id" column="id"/>
+        <result property="typeId" column="type_id"/>
+        <result property="teacherId" column="teacher_id"/>
+    </resultMap>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[
+
+        INSERT INTO t_famous_teacher_type_relation (
+        	id,
+        	type_id,
+        	teacher_id
+        ) VALUES (
+        	#{id},
+        	#{typeId},
+        	#{teacherId}
+        )
+
+        ]]>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM t_famous_teacher_type_relation WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.github.model.FamousTeacherTypeRelation">
+        <![CDATA[
+
+        UPDATE t_famous_teacher_type_relation SET
+	        type_id = #{typeId},
+	        teacher_id = #{teacherId}
+        WHERE
+	        id = #{id}
+
+        ]]>
+    </update>
+
+    <select id="get" resultMap="BaseResultMap">
+        SELECT * FROM t_famous_teacher_type_relation WHERE id = #{id}
+    </select>
+
+    <select id="getList" parameterType="com.github.model.FamousTeacherTypeRelation" resultMap="BaseResultMap">
+        SELECT * FROM t_famous_teacher_type_relation
+        <where>
+            TRUE
+            <if test="typeId != null and typeId != ''">
+                AND type_id = #{typeId}
+            </if>
+            <if test="teacherId != null and teacherId != ''">
+                AND teacher_id = #{teacherId}
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="getAllListInfo" resultType="java.util.Map">
+        SELECT t.*,tr.id as trid,tr.type_id as tid
+        FROM t_famous_teacher_type_relation as tr
+        LEFT JOIN t_famous_teacher as t ON tr.teacher_id=t.id
+        <where>
+            TRUE
+            <if test="tid != null and tid != ''">
+                AND tr.type_id= #{tid}
+            </if>
+            <if test=" keyword != null and keyword != ''">
+                AND ( t.person_name like '%${keyword}%' OR t.description like '%${keyword}%')
+            </if>
+        </where>
+
+    </select>
+
+
+</mapper>
+

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.mapper.OrgResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.github.model.OrgResource" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="res_type" property="resType" jdbcType="INTEGER" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="jump_url" property="jumpUrl" jdbcType="VARCHAR" />
+    <result column="fid" property="fid" jdbcType="INTEGER" />
+    <result column="sequence" property="sequence" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="ter_type" property="terType" jdbcType="INTEGER" />
+    <result column="open_type" property="openType" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, res_type, img_url, jump_url, fid, sequence, status, ter_type, open_type, title
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_org_resource
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_org_resource
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.github.model.OrgResource" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_org_resource (res_type, img_url, jump_url, 
+      fid, sequence, status, ter_type, open_type, title)
+    values (#{resType,jdbcType=INTEGER}, #{imgUrl,jdbcType=VARCHAR}, #{jumpUrl,jdbcType=VARCHAR}, 
+      #{fid,jdbcType=INTEGER}, #{sequence,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{terType,jdbcType=INTEGER}, #{openType,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.github.model.OrgResource" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_org_resource
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="resType != null" >
+        res_type,
+      </if>
+      <if test="imgUrl != null" >
+        img_url,
+      </if>
+      <if test="jumpUrl != null" >
+        jump_url,
+      </if>
+      <if test="fid != null" >
+        fid,
+      </if>
+      <if test="sequence != null" >
+        sequence,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="terType != null" >
+        ter_type,
+      </if>
+      <if test="openType != null" >
+        open_type,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="resType != null" >
+        #{resType,jdbcType=INTEGER},
+      </if>
+      <if test="imgUrl != null" >
+        #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="jumpUrl != null" >
+        #{jumpUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fid != null" >
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="sequence != null" >
+        #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="terType != null" >
+        #{terType,jdbcType=INTEGER},
+      </if>
+      <if test="openType != null" >
+        #{openType,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.github.model.OrgResource" >
+    update t_org_resource
+    <set >
+      <if test="resType != null" >
+        res_type = #{resType,jdbcType=INTEGER},
+      </if>
+      <if test="imgUrl != null" >
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="jumpUrl != null" >
+        jump_url = #{jumpUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fid != null" >
+        fid = #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="sequence != null" >
+        sequence = #{sequence,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="terType != null" >
+        ter_type = #{terType,jdbcType=INTEGER},
+      </if>
+      <if test="openType != null" >
+        open_type = #{openType,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.github.model.OrgResource" >
+    update t_org_resource
+    set res_type = #{resType,jdbcType=INTEGER},
+      img_url = #{imgUrl,jdbcType=VARCHAR},
+      jump_url = #{jumpUrl,jdbcType=VARCHAR},
+      fid = #{fid,jdbcType=INTEGER},
+      sequence = #{sequence,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      ter_type = #{terType,jdbcType=INTEGER},
+      open_type = #{openType,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getList"  resultMap="BaseResultMap" parameterType="com.github.model.OrgResource">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM t_org_resource WHERE res_type = 1
+      <if test="fid != null and fid != ''">
+        AND fid = #{fid,jdbcType=INTEGER}
+      </if>
+    <if test="terType != null" >
+      and ter_type = #{terType,jdbcType=INTEGER}
+    </if>
+    <if test="status != null" >
+      and `status` = #{status,jdbcType=INTEGER}
+    </if>
+    ORDER BY sequence
+  </select>
+
+</mapper>

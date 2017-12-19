@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>banner添加</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../assets/layui/css/layui.css" th:href="@{/assets/layui/css/layui.css}"/>
+    <link rel="stylesheet" href="../assets/css/style.css" th:href="@{/assets/css/style.css}">
+    <style>
+        .layui-input-block>input{
+            width: 300px;
+        }
+        #img{
+            display: inline-block;
+            width: 300px;
+            height: 200px;
+            border:1px solid #ddd;
+            text-align: center;
+            line-height: 200px;
+        }
+        #img>img{
+            width: 100%;
+            height: 100%;
+        }
+        #img .icon-upload{
+            line-height: 100px;
+            font-size: 60px;
+            color: #DBDBDB;
+        }
+    </style>
+</head>
+<body class="child-body">
+<form action="/orgIndex/updateBanner" th:object="${banner}" method="post" class="layui-form" style="width:80%;">
+
+    <div class="layui-form-item" th:if="*{terType eq 0}">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" th:value="*{title}" class="layui-input" placeholder="请输入跳转页面标题" autocomplete="OFF">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">跳转页面</label>
+        <div class="layui-input-block">
+            <input type="text" name="jumpUrl"  th:value="*{jumpUrl}" class="layui-input" placeholder="请输入跳转链接地址" autocomplete="OFF">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">banner顺序</label>
+        <div class="layui-input-block">
+            <input type="text" name="sequence" th:value="*{sequence}" class="layui-input" lay-verify="required" placeholder="请输入banner顺序(参考已有banner顺序，没有从1开始)" autocomplete="OFF">
+        </div>
+    </div>
+
+    <div class="layui-form-item" th:if="*{terType eq 1}">
+        <label class="layui-form-label">跳转方式</label>
+        <div class="layui-input-block">
+            <input type="radio" name="openType" value="1" title="当前页面" th:checked="*{openType == 1}" >
+            <input type="radio" name="openType" value="0" title="新开页面" th:checked="*{openType == 0}" >
+        </div>
+    </div>
+
+    <div class="layui-form-item" th:if="*{terType eq 0}">
+        <label class="layui-form-label">打开方式</label>
+        <div class="layui-input-block">
+            <input type="radio" name="openType" value="1" title="openUrlNoBar" th:checked="*{openType == 1}" >
+            <input type="radio" name="openType" value="0" title="openUrl" th:checked="*{openType == 0}" >
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-block">
+            <input type="radio" name="status" value="1" title="启用" th:checked="*{status == 1}">
+            <input type="radio" name="status" value="0" title="禁用" th:checked="*{status == 0}">
+        </div>
+    </div>
+
+    <!--上传组件空缺-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">图片预览</label>
+        <div class="layui-input-block">
+            <!--<input type="hidden" th:value="*{cover}" name="cover"/>-->
+            <a target="_blank"  style="cursor: pointer" id="img">
+                <i class="layui-icon icon-upload">&#xe681;</i>
+            </a>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn" id="uploadBtn">
+                <i class="layui-icon">&#xe67c;</i>上传图片
+            </button>
+        </div>
+    </div>
+    <!--放置id-->
+    <!--<input type="hidden" name="jumpUrl"  th:value="*{jumpUrl}">-->
+    <input type="hidden" name="imgUrl"  th:value="*{imgUrl}" id="imgSrc">
+    <input type="hidden" name="id"  th:value="*{id}">
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="addLinks">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" src="../assets/layui/layui.js" th:src="@{/assets/layui/layui.js}"></script>
+
+<script type="text/javascript">
+    layui.use(['form', 'layer', 'jquery','upload'], function(){
+        var form = layui.form,
+            layer = parent.layer === undefined ? layui.layer : parent.layer,
+            $ = layui.jquery,
+            upload = layui.upload;
+
+        //监听指定开关
+        form.on('switch', function(data){
+            this.checked ? this.value = 1 : this.value = 0;
+        });
+
+        form.on("submit(addLinks)",function(data){
+            var status = data.field.status=="on" ? "1" : "0";
+
+        })
+
+        var uploadInst = upload.render({
+            elem: '#uploadBtn' //绑定元素
+            ,url: '/upload/banner' //上传接口
+            ,field: 'uploadFile'
+            ,data: {'directory': '/banner'}
+            ,done: function(res){
+                var url = res.url;
+                $('#img').html('<img src="' + url + '">');
+                $('#imgSrc').val(url);
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+
+    })
+</script>
+
+</body>
+</html>

@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.mapper.EcnuCourseMapper" >
+  <resultMap id="BaseResultMap" type="com.github.model.EcnuCourse" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="course_id" property="courseId" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="uname" property="uname" jdbcType="VARCHAR" />
+    <result column="fid" property="fid" jdbcType="INTEGER" />
+    <result column="fname" property="fname" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="cover" property="cover" jdbcType="VARCHAR" />
+    <result column="hour" property="hour" jdbcType="INTEGER" />
+    <result column="enroll" property="enroll" jdbcType="INTEGER" />
+    <result column="feature_template_id" property="featureTemplateId" jdbcType="INTEGER" />
+    <result column="average" property="average" jdbcType="REAL" />
+    <result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="online" property="online" jdbcType="INTEGER" />
+    <result column="type_id" property="typeId" jdbcType="INTEGER" />
+    <result column="teacher_hour" property="teacherHour" jdbcType="INTEGER" />
+    <result column="teacher_hour_flag" property="teacherHourFlag" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.github.model.EcnuCourse" extends="BaseResultMap" >
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, course_id, `uid`, uname, fid, fname, `name`, cover, `hour`, enroll, feature_template_id, 
+    average, check_time, create_time, update_time, `status`, `online`, type_id, teacher_hour, 
+    teacher_hour_flag
+  </sql>
+  <sql id="Blob_Column_List" >
+    description
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_ecnu_course
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_ecnu_course
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.github.model.EcnuCourse" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_ecnu_course (course_id, `uid`, uname, 
+      fid, fname, `name`, cover, 
+      `hour`, enroll, feature_template_id, 
+      average, check_time, create_time, 
+      update_time, `status`, `online`, 
+      type_id, teacher_hour, teacher_hour_flag, 
+      description)
+    values (#{courseId,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{uname,jdbcType=VARCHAR}, 
+      #{fid,jdbcType=INTEGER}, #{fname,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR}, 
+      #{hour,jdbcType=INTEGER}, #{enroll,jdbcType=INTEGER}, #{featureTemplateId,jdbcType=INTEGER}, 
+      #{average,jdbcType=REAL}, #{checkTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{online,jdbcType=INTEGER}, 
+      #{typeId,jdbcType=INTEGER}, #{teacherHour,jdbcType=INTEGER}, #{teacherHourFlag,jdbcType=INTEGER}, 
+      #{description,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.github.model.EcnuCourse" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_ecnu_course
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="courseId != null" >
+        course_id,
+      </if>
+      <if test="uid != null" >
+        `uid`,
+      </if>
+      <if test="uname != null" >
+        uname,
+      </if>
+      <if test="fid != null" >
+        fid,
+      </if>
+      <if test="fname != null" >
+        fname,
+      </if>
+      <if test="name != null" >
+        `name`,
+      </if>
+      <if test="cover != null" >
+        cover,
+      </if>
+      <if test="hour != null" >
+        `hour`,
+      </if>
+      <if test="enroll != null" >
+        enroll,
+      </if>
+      <if test="featureTemplateId != null" >
+        feature_template_id,
+      </if>
+      <if test="average != null" >
+        average,
+      </if>
+      <if test="checkTime != null" >
+        check_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+      <if test="online != null" >
+        `online`,
+      </if>
+      <if test="typeId != null" >
+        type_id,
+      </if>
+      <if test="teacherHour != null" >
+        teacher_hour,
+      </if>
+      <if test="teacherHourFlag != null" >
+        teacher_hour_flag,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="courseId != null" >
+        #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="uname != null" >
+        #{uname,jdbcType=VARCHAR},
+      </if>
+      <if test="fid != null" >
+        #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="fname != null" >
+        #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="cover != null" >
+        #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="hour != null" >
+        #{hour,jdbcType=INTEGER},
+      </if>
+      <if test="enroll != null" >
+        #{enroll,jdbcType=INTEGER},
+      </if>
+      <if test="featureTemplateId != null" >
+        #{featureTemplateId,jdbcType=INTEGER},
+      </if>
+      <if test="average != null" >
+        #{average,jdbcType=REAL},
+      </if>
+      <if test="checkTime != null" >
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="online != null" >
+        #{online,jdbcType=INTEGER},
+      </if>
+      <if test="typeId != null" >
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherHour != null" >
+        #{teacherHour,jdbcType=INTEGER},
+      </if>
+      <if test="teacherHourFlag != null" >
+        #{teacherHourFlag,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.github.model.EcnuCourse" >
+    update t_ecnu_course
+    <set >
+      <if test="courseId != null" >
+        course_id = #{courseId,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        `uid` = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="uname != null" >
+        uname = #{uname,jdbcType=VARCHAR},
+      </if>
+      <if test="fid != null" >
+        fid = #{fid,jdbcType=INTEGER},
+      </if>
+      <if test="fname != null" >
+        fname = #{fname,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="cover != null" >
+        cover = #{cover,jdbcType=VARCHAR},
+      </if>
+      <if test="hour != null" >
+        `hour` = #{hour,jdbcType=INTEGER},
+      </if>
+      <if test="enroll != null" >
+        enroll = #{enroll,jdbcType=INTEGER},
+      </if>
+      <if test="featureTemplateId != null" >
+        feature_template_id = #{featureTemplateId,jdbcType=INTEGER},
+      </if>
+      <if test="average != null" >
+        average = #{average,jdbcType=REAL},
+      </if>
+      <if test="checkTime != null" >
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="online != null" >
+        `online` = #{online,jdbcType=INTEGER},
+      </if>
+      <if test="typeId != null" >
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherHour != null" >
+        teacher_hour = #{teacherHour,jdbcType=INTEGER},
+      </if>
+      <if test="teacherHourFlag != null" >
+        teacher_hour_flag = #{teacherHourFlag,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.github.model.EcnuCourse" >
+    update t_ecnu_course
+    set course_id = #{courseId,jdbcType=INTEGER},
+      `uid` = #{uid,jdbcType=INTEGER},
+      uname = #{uname,jdbcType=VARCHAR},
+      fid = #{fid,jdbcType=INTEGER},
+      fname = #{fname,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      cover = #{cover,jdbcType=VARCHAR},
+      `hour` = #{hour,jdbcType=INTEGER},
+      enroll = #{enroll,jdbcType=INTEGER},
+      feature_template_id = #{featureTemplateId,jdbcType=INTEGER},
+      average = #{average,jdbcType=REAL},
+      check_time = #{checkTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=INTEGER},
+      `online` = #{online,jdbcType=INTEGER},
+      type_id = #{typeId,jdbcType=INTEGER},
+      teacher_hour = #{teacherHour,jdbcType=INTEGER},
+      teacher_hour_flag = #{teacherHourFlag,jdbcType=INTEGER},
+      description = #{description,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.github.model.EcnuCourse" >
+    update t_ecnu_course
+    set course_id = #{courseId,jdbcType=INTEGER},
+      `uid` = #{uid,jdbcType=INTEGER},
+      uname = #{uname,jdbcType=VARCHAR},
+      fid = #{fid,jdbcType=INTEGER},
+      fname = #{fname,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      cover = #{cover,jdbcType=VARCHAR},
+      `hour` = #{hour,jdbcType=INTEGER},
+      enroll = #{enroll,jdbcType=INTEGER},
+      feature_template_id = #{featureTemplateId,jdbcType=INTEGER},
+      average = #{average,jdbcType=REAL},
+      check_time = #{checkTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=INTEGER},
+      `online` = #{online,jdbcType=INTEGER},
+      type_id = #{typeId,jdbcType=INTEGER},
+      teacher_hour = #{teacherHour,jdbcType=INTEGER},
+      teacher_hour_flag = #{teacherHourFlag,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--  - 分割线 - -->
+  <sql id="where">
+    <trim prefix="where" suffixOverrides="and">
+      <if test="courseId != null" >
+        course_id = #{courseId,jdbcType=INTEGER} AND
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER} AND
+      </if>
+      <if test="fid != null" >
+        fid = #{fid,jdbcType=INTEGER} AND
+      </if>
+      <if test="uname != null" >
+        uname like concat('%',#{uname,jdbcType=VARCHAR},'%') AND
+      </if>
+
+      <if test="fname != null" >
+        fname = #{fname,jdbcType=VARCHAR} AND
+      </if>
+      <if test="name != null" >
+        `name` like concat('%',#{name,jdbcType=VARCHAR},'%') AND
+      </if>
+      <if test="cover != null" >
+        cover = #{cover,jdbcType=VARCHAR} AND
+      </if>
+      <if test="hour != null" >
+        `hour` = #{hour,jdbcType=INTEGER} AND
+      </if>
+      <if test="enroll != null" >
+        enroll = #{enroll,jdbcType=INTEGER} AND
+      </if>
+      <if test="featureTemplateId != null" >
+        feature_template_id = #{featureTemplateId,jdbcType=INTEGER} AND
+      </if>
+      <if test="average != null" >
+        average = #{average,jdbcType=REAL} AND
+      </if>
+      <if test="checkTime != null" >
+        check_time = #{checkTime,jdbcType=TIMESTAMP} AND
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP} AND
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP} AND
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=INTEGER} AND
+      </if>
+      <if test="online != null" >
+        `online` = #{online,jdbcType=INTEGER} AND
+      </if>
+      <if test="typeId != null" >
+        type_id = #{typeId,jdbcType=INTEGER} AND
+      </if>
+      <if test="teacherHour != null" >
+        teacher_hour = #{teacherHour,jdbcType=INTEGER} AND
+      </if>
+      <if test="teacherHourFlag != null" >
+        teacher_hour_flag = #{teacherHourFlag,jdbcType=INTEGER} AND
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=LONGVARCHAR} AND
+      </if>
+    </trim>
+  </sql>
+
+  <select id="selectByCondition" resultMap="ResultMapWithBLOBs" parameterType="com.github.model.EcnuCourse" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_ecnu_course
+    <include refid="where"/>
+  </select>
+
+  <!--selectByTypeId-->
+  <select id="selectByTypeId" resultMap="ResultMapWithBLOBs" parameterType="com.github.model.EcnuCourse" >
+    select
+      course.id,
+      course.course_id,
+      course.`uid`,
+      course.uname,
+      course.fid,
+      course.fname,
+      course.`name`,
+      course.cover,
+      course.`hour`,
+      course.enroll,
+      course.feature_template_id,
+      course.average,
+      course.check_time,
+      course.create_time,
+      course.update_time,
+      course.`status`,
+      course.`online`,
+      course.teacher_hour,
+      course.teacher_hour_flag,
+      course.description,
+      typ.id as type_id
+    from t_resource_tag tag join t_ecnu_course course on tag.type=1 and tag.type_id=course.id
+    join t_course_type typ on tag.tag_id = typ.id
+    where
+      typ.id = #{typeId,jdbcType=INTEGER}
+      <if test="fid!=null">
+        and course.fid = #{fid,jdbcType=INTEGER}
+      </if>
+      <if test="status!=null">
+        and course.`status` = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="name!=null">
+        and course.name like concat('%',#{name,jdbcType=VARCHAR},'%')
+      </if>
+  </select>
+
+  <!--selectByNoneTypeId-->
+  <select id="selectByNoneTypeId" resultMap="ResultMapWithBLOBs" parameterType="com.github.model.EcnuCourse" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_ecnu_course course
+    where
+    id not in(select tag.type_id from t_resource_tag tag where tag_id = #{typeId,jdbcType=INTEGER})
+    <if test="fid!=null">
+      and course.fid = #{fid,jdbcType=INTEGER}
+    </if>
+    <if test="status!=null">
+      and course.`status` = #{status,jdbcType=INTEGER}
+    </if>
+    <if test="name!=null">
+      and course.name like concat('%',#{name,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+
+  <delete id="deleteBatch" parameterType="java.util.List">
+    update t_ecnu_course SET
+      status = 3
+    where id in
+    <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+               #{id}
+    </foreach>
+  </delete>
+
+  <!--selectHomeRecommend-->
+  <select id="selectHomeRecommend" resultMap="ResultMapWithBLOBs" parameterType="com.github.model.EcnuCourse" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    FROM
+      (select course.* from t_ecnu_course course join t_recommended_course rec on course.id=rec.course_id and
+        <if test="fid != null">
+          rec.fid = #{fid}
+        </if>
+        <if test="fid == null">
+          rec.fid is null
+        </if>
+      ) recommend
+    <include refid="where"/>
+  </select>
+
+  <!--selectHomeRecommend-->
+  <select id="selectHomeNoneRecommend" resultMap="ResultMapWithBLOBs" parameterType="com.github.model.EcnuCourse" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    FROM t_ecnu_course
+    WHERE
+        id not in (select course_id from t_recommended_course where
+        <if test="fid != null">
+          fid = #{fid}
+        </if>
+        <if test="fid == null">
+          fid is null
+        </if>
+        )
+    <if test="fid != null">
+      and fid = #{fid}
+    </if>
+    <if test="fid == null">
+      and fid is null
+    </if>
+    <if test="name != null" >
+      and `name` like concat('%',#{name,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="status!=null">
+      and  `status` = #{status,jdbcType=INTEGER}
+    </if>
+    <if test="online != null" >
+      AND  `online` = #{online,jdbcType=INTEGER}
+    </if>
+
+  </select>
+
+</mapper>
